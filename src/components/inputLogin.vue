@@ -66,7 +66,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="secondary" @click="Submit">Login</v-btn>
+                <v-btn color="primary" @click="Submit">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -99,7 +99,10 @@ export default {
             email: this.userEmail+"@gmail.com",
             password: this.userPa
           }
-            axios.post('https://log-intesting.firebaseio.com/user.json', userData);
+          /* eslint-disable no-console */
+            axios.post('https://warm-brushlands-30448.herokuapp.com/api/login', userData)
+                .then(res => console.log(res))
+                .catch(error => console.log(error))
             this.userEmail = "";
             this.userPa = "";
         }
