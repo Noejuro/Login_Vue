@@ -66,7 +66,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary" @click="Submit">Login</v-btn>
+                <v-btn color="secondary" @click="Submit">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -100,6 +100,8 @@ export default {
             password: this.userPa
           }
             axios.post('https://log-intesting.firebaseio.com/user.json', userData);
+            this.userEmail = "";
+            this.userPa = "";
         }
     }
 }
