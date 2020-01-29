@@ -15,7 +15,7 @@
           >
             <v-card class="elevation-12">
               <v-toolbar
-                color="blue aqua"
+                color="purple"
                 dark
                 flat
               >
@@ -69,7 +69,9 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary" @click="Submit">Login</v-btn>
+                <v-col cols="12">
+                    <v-btn style="width: 100%" color="success" @click="Submit">Login</v-btn>    
+                </v-col>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -108,8 +110,7 @@ export default {
             axios.post('https://warm-brushlands-30448.herokuapp.com/api/login', userData)
                 .then(res => {
                     console.log(res)
-                    if(res.status == 100)
-                    console.log('entra');
+                    console.log(res.data.name);
                         })
                 .catch(error => {
                     console.log(error);

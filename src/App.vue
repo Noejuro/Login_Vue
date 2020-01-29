@@ -1,15 +1,14 @@
 <template>
   <v-app id="inspire">
-    <app-input></app-input>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import inputLogin from './components/inputLogin.vue'
 
 export default {
     components: {
-      appInput: inputLogin
+      
     }
 }
 </script>
