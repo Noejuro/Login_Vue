@@ -111,6 +111,8 @@ export default {
                 .then(res => {
                     console.log(res)
                     console.log(res.data.name);
+                    
+                    this.$router.push({name: 'dashboard'})
                         })
                 .catch(error => {
                     console.log(error);
@@ -123,6 +125,9 @@ export default {
             this.userEmail = "";
             this.userPa = "";
         }
+    },
+    created() {
+      this.$vuetify.theme.dark = false
     }
 }
 </script>
