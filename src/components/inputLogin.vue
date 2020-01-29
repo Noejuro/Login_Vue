@@ -111,7 +111,8 @@ export default {
                 .then(res => {
                     console.log(res)
                     console.log(res.data.name);
-                    
+                    this.$store.state.user = res.data.name;
+                    console.log(this.$store.state.user);
                     this.$router.push({name: 'dashboard'})
                         })
                 .catch(error => {
