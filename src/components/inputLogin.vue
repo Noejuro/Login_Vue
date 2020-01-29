@@ -44,6 +44,7 @@
                     shaped
                     outlined
                     v-model="userEmail"
+                    @click="show = false"
                   > </v-text-field>
                   
                   <v-text-field
@@ -60,9 +61,11 @@
                     shaped
                     outlined
                     @click:append="show1 = !show1"
+                    @click="show = false"
                   />
-
+                
               </v-form> 
+              <h7 v-if="show" style="color: red">{{ error_message }}</h7>
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
@@ -82,7 +85,9 @@ export default {
         return {
           show1: false,
           userEmail: '',
-          userPa: ''
+          userPa: '',
+          show: false,
+          error_message: ''
         }
     },
     computed: {
@@ -101,8 +106,19 @@ export default {
           }
           /* eslint-disable no-console */
             axios.post('https://warm-brushlands-30448.herokuapp.com/api/login', userData)
-                .then(res => console.log(res))
-                .catch(error => console.log(error))
+                .then(res => {
+                    console.log(res)
+                    if(res.status == 100)
+                    console.log('entra');
+                        })
+                .catch(error => {
+                    console.log(error);
+                    this.show = true
+                    if(error.response.status == 400)
+                        this.error_message = 'Email or password are incorrect';
+                    if(error.status == 401)
+                        this.error_message = 'Acces Denied';
+                    })
             this.userEmail = "";
             this.userPa = "";
         }
