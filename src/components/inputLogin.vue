@@ -110,11 +110,8 @@ export default {
             axios.post('https://warm-brushlands-30448.herokuapp.com/api/login', userData)
                 .then(res => {
                     console.log(res)
-                    console.log(res.data.name);
-                    console.log(res.data.token);
                     this.$store.state.activeUser.name = res.data.name;
                     this.$store.state.activeUser.token = res.data.token;
-                    console.log(this.$store.state.activeUser.name);
                     this.$router.push({name: 'dashboard'})
                         })
                 .catch(error => {
