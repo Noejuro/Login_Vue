@@ -111,7 +111,9 @@ export default {
                 .then(res => {
                     console.log(res)
                     console.log(res.data.name);
+                    console.log(res.data.token);
                     this.$store.state.user.name = res.data.name;
+                    this.$store.state.user.token = res.data.token;
                     console.log(this.$store.state.user.name);
                     this.$router.push({name: 'dashboard'})
                         })
