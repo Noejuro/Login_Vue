@@ -41,6 +41,11 @@
                   <v-list-item-content>Email:</v-list-item-content>
                   <v-list-item-content class="align-end">{{ user.email }}</v-list-item-content>
                 </v-list-item>
+
+                <v-list-item>
+                  <v-list-item-content>Phone:</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ user.principalTelephone }}</v-list-item-content>
+                </v-list-item>
               </v-list>
             </v-card>
           </v-col>
@@ -55,25 +60,20 @@
 import axios from 'axios';
   export default {
     data: () => ({
-      usersPerPage: 4,
+      usersPerPage: 3,
       users: [ 
         'id', 
         'name', 
-        'email' ]
+        'email',
+        'principalTelephone' ]
     }),
     created() {
         /* eslint-disable no-console */
-        axios.get('https://warm-brushlands-30448.herokuapp.com/api/users',{params:{/*this.usuarios.push({
-              //this.email,
-              //this.password
-              */},headers: {'x-auth-token': this.$store.state.activeUser.token}})
+        axios.get('https://warm-brushlands-30448.herokuapp.com/api/users',{params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
                 .then(res => {
                     console.log(res);
-                    this.$store.state.users = res.data[1]
+                    this.$store.state.users = res.data
                     this.users = res.data
-                    console.log(this.users[2]._id);
-                    console.log(this.users[2].name);
-                    console.log(this.users[2].email);
                         })
                 .catch(error => {
                     console.log(error);
