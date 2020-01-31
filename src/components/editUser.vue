@@ -156,14 +156,14 @@
     methods: {
       submit () {
         const userData = {
-            name: this.$store.state.users[this.$store.state.selectedID].name,
-            lastNamePat: this.$store.state.users[this.$store.state.selectedID].lastNamePat,
-            email: this.$store.state.users[this.$store.state.selectedID].email,
-            telephone: this.$store.state.users[this.$store.state.selectedID].principalTelephone,
+            name: this.name,
+            lastNamePat: this.lastNamePat,
+            email: this.email,
+            telephone: this.principalTelephone,
             isActive: true
           }
         if(this.lastNameMat != '') {
-          this.$set(userData, 'lastNameMat', this.$store.state.users[this.$store.state.selectedID].lastNameMat);
+          this.$set(userData, 'lastNameMat', this.lastNameMat);
         }
         /* eslint-disable no-console */
         console.log(userData)

@@ -56,7 +56,7 @@
                 <br>
                 <v-list-item>
                   <v-btn small class="ma-1" text icon>
-                    <v-icon @click="open(index)">mdi-pencil</v-icon>
+                    <v-icon @click="open(index, user._id)">mdi-pencil</v-icon>
                   </v-btn>
 
 
@@ -119,11 +119,11 @@
                                 required
                                 @input="$v.name.$touch()"
                                 @blur="$v.name.$touch()"
-                                v-model = "this.activeUser.name"
+                                v-model = "name"
                                 ></v-text-field>
 
                                 <v-text-field
-                                v-model = "this.activeUser.lastNamePat"
+                                v-model = "lastNamePat"
                                 :error-messages="lastPErrors"
                                 label="Last Name P"
                                 required
@@ -132,14 +132,14 @@
                                 ></v-text-field>
 
                                 <v-text-field
-                                v-model = "this.activeUser.lastNameMat"
+                                v-model = "lastNameMat"
                                 :error-messages="lastMErrors"
                                 label="Last Name Mat"
                                 @input="$v.lastNameMat.$touch()"
                                 @blur="$v.lastNameMat.$touch()"
                                 ></v-text-field>
                                 <v-text-field
-                                v-model = "this.activeUser.principalTelephone"
+                                v-model = "principalTelephone"
                                 :error-messages="phoneErrors"
                                 label="Phone Number"
                                 required
@@ -148,7 +148,7 @@
                                 ></v-text-field>
 
                                 <v-text-field
-                                v-model = "this.activeUser.email"
+                                v-model = "email"
                                 :error-messages="emailErrors"
                                 label="E-mail"
                                 required
@@ -219,6 +219,13 @@ import axios from 'axios';
         'email', 
         'principalTelephone',
         'isActive',],
+        id: '',
+        name: '',
+        lastNamePat: '',
+        lastNameMat: '',
+        password: '',
+        email: '',
+        principalTelephone: null,
         checkbox: false,
         dialog: false,
         statusName: 'Deleted',
@@ -317,31 +324,45 @@ import axios from 'axios';
                     console.log(error);
                     })
       },
-      open(id) {
+      open(index, id) {
         console.log('open')
-        this.$store.state.selectedID = id;
-        this.activeUser = this.users[id]
+        this.$store.state.selectedID = index;
+        this.activeUser = this.users[index];
+        this.id = id;
+        this.name = this.users[index].name;
+        this.lastNamePat = this.users[index].lastNamePat;
+        this.lastNameMat = this.users[index].lastNameMat;
+        this.email = this.users[index].email;
+        this.principalTelephone = this.users[index].principalTelephone;
         console.log(this.activeUser)
+        console.log(this.name)
+        console.log(this.lastNamePat)
+        console.log(this.lastNameMat)
+        console.log(this.email)
+        console.log(this.principalTelephone)
         console.log(this.$store.state.selectedID)
-        console.log(this.$store.state.users[this.$store.state.selectedID].name)
         this.$store.state.showform = true;
       },
       submit () {
         const userData = {
-            name: this.$store.state.users[this.$store.state.selectedID].name,
-            lastNamePat: this.$store.state.users[this.$store.state.selectedID].lastNamePat,
-            email: this.$store.state.users[this.$store.state.selectedID].email,
-            telephone: this.$store.state.users[this.$store.state.selectedID].principalTelephone,
+            name: this.name,
+            lastNamePat: this.lastNamePat,
+            email: this.email,
+            telephone: this.principalTelephone,
             isActive: true
           }
         if(this.lastNameMat != '') {
-          this.$set(userData, 'lastNameMat', this.$store.state.users[this.$store.state.selectedID].lastNameMat);
+          this.$set(userData, 'lastNameMat', this.lastNameMat);
         }
         /* eslint-disable no-console */
         console.log(userData)
-        axios.put('https://warm-brushlands-30448.herokuapp.com/api/users'+this.$store.state.users[this.$store.state.selectedID].id, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
+        console.log(this.id)
+        axios.put('https://warm-brushlands-30448.herokuapp.com/api/users/'+this.id, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
                     console.log(res);
+                    this.users[this.$store.state.selectedID] = res.data;
+                    console.log(this.users[this.$store.state.selectedID]);
+                    this.$store.state.showform = false;
                     this.dialog = false
                         })
                 .catch(error => {
