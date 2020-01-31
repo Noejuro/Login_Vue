@@ -34,11 +34,6 @@
               <v-list dense>
 
                 <v-list-item>
-                  <v-list-item-content>ID:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ user._id }}</v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
                   <v-list-item-content>Last Name:</v-list-item-content>
                   <v-list-item-content left
                    class="align-end">{{ user.lastNamePat }} {{ user.lastNameMat }} </v-list-item-content>
