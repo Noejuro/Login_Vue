@@ -361,6 +361,7 @@ import axios from 'axios';
                 .then(res => {
                     console.log(res);
                     this.users[this.$store.state.selectedID] = res.data;
+                    this.users[this.$store.state.selectedID].principalTelephone = res.data.telephone;
                     console.log(this.users[this.$store.state.selectedID]);
                     this.$store.state.showform = false;
                     this.dialog = false
