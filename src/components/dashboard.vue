@@ -16,7 +16,7 @@
         </v-list-item>
         <v-list-item link>
           <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
+            <v-icon>mdi-account-plus</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Sign up</v-list-item-title>
@@ -53,7 +53,7 @@
           align="center"
           justify="center"
         >
-            <app-signup></app-signup>
+            <app-table></app-table>
         </v-row>
       </v-container>
     </v-content>
@@ -66,8 +66,8 @@
 
 <script>
 
-//import Table from './table.vue'
-import SignUp from './sign_up.vue'
+import Table from './table.vue'
+//import SignUp from './sign_up.vue'
 
   export default {
     props: {
@@ -81,8 +81,8 @@ import SignUp from './sign_up.vue'
       this.$vuetify.theme.dark = true
     },
     components: {
-      //appTable: Table
-      appSignup: SignUp
+      appTable: Table
+      //appSignup: SignUp
     }
   }
 </script>

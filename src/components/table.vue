@@ -49,7 +49,16 @@
                   <v-list-item-content
                    class="align-end">{{ user.principalTelephone }}</v-list-item-content>
                 </v-list-item>
-
+                <br>
+                <v-list-item>
+                  <v-btn  x small class="ma-1"  fab color="red darken-5">
+                    <v-icon color="white">mdi-delete</v-icon>
+                  </v-btn>
+                   
+                  <v-btn absolute right x small class="ma-1"   fab color="indigo darken-5">
+                    <v-icon color="white">mdi-pencil</v-icon>
+                  </v-btn>
+                </v-list-item>
                 
               </v-list>
             </v-card>
