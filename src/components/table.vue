@@ -24,7 +24,7 @@
             cols="12"
             sm="6"
             md="4"
-            lg="3"
+            lg="4"
           >
             <v-card>
               <v-card-title class="subheading font-weight-bold">{{ user.name }}</v-card-title>
@@ -32,11 +32,6 @@
               <v-divider></v-divider>
 
               <v-list dense>
-                <v-list-item>
-                  <v-list-item-content>ID:</v-list-item-content>
-                  <v-list-item-content left
-                   class="align-end">{{ user._id }}</v-list-item-content>
-                </v-list-item>
 
                 <v-list-item>
                   <v-list-item-content>Last Name:</v-list-item-content>
@@ -70,7 +65,7 @@
 import axios from 'axios';
   export default {
     data: () => ({
-      usersPerPage: 5,
+      usersPerPage: 9,
       users: [
         'id', 
         'name', 

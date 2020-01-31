@@ -53,7 +53,7 @@
           align="center"
           justify="center"
         >
-            <app-table></app-table>
+            <app-signup></app-signup>
         </v-row>
       </v-container>
     </v-content>
@@ -66,7 +66,8 @@
 
 <script>
 
-import Table from './table.vue'
+//import Table from './table.vue'
+import SignUp from './sign_up.vue'
 
   export default {
     props: {
@@ -80,7 +81,8 @@ import Table from './table.vue'
       this.$vuetify.theme.dark = true
     },
     components: {
-      appTable: Table
+      //appTable: Table
+      appSignup: SignUp
     }
   }
 </script>

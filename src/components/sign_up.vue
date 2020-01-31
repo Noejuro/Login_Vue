@@ -3,12 +3,37 @@
     <v-text-field
       v-model="name"
       :error-messages="nameErrors"
-      :counter="10"
       label="Name"
       required
       @input="$v.name.$touch()"
       @blur="$v.name.$touch()"
     ></v-text-field>
+
+    <v-text-field
+      v-model="lastNamePat"
+      :error-messages="lastPErrors"
+      label="Last Name P"
+      required
+      @input="$v.lastNamePat.$touch()"
+      @blur="$v.lastNamePat.$touch()"
+    ></v-text-field>
+
+    <v-text-field
+      v-model="lastNameMat"
+      :error-messages="lastMErrors"
+      label="Last Name Mat"
+      @input="$v.lastNameMat.$touch()"
+      @blur="$v.lastNameMat.$touch()"
+    ></v-text-field>
+    <v-text-field
+      v-model="principalTelephone"
+      :error-messages="phoneErrors"
+      label="Phone Number"
+      required
+      @input="$v.principalTelephone.$touch()"
+      @blur="$v.principalTelephone.$touch()"
+    ></v-text-field>
+
     <v-text-field
       v-model="email"
       :error-messages="emailErrors"
@@ -41,17 +66,19 @@
 
 <script>
   import { validationMixin } from 'vuelidate'
-  import { required, maxLength, email, minLength } from 'vuelidate/lib/validators'
+  import { required, email, minLength, numeric, alpha } from 'vuelidate/lib/validators'
   import axios from 'axios'
 
   export default {
     mixins: [validationMixin],
 
     validations: {
-      name: { required, maxLength: maxLength(10) },
+      name: { required, alpha },
+      lastNameMat: { alpha},
+      lastNamePat: { required, alpha},
       password: { required, minLength: minLength(5) },
       email: { required, email },
-      select: { required },
+      principalTelephone: { required, numeric },
       checkbox: {
         checked (val) {
           return val
@@ -61,9 +88,11 @@
 
     data: () => ({
       name: '',
+      lastNamePat: '',
+      lastNameMat: '',
       password: '',
       email: '',
-      select: null,
+      principalTelephone: null,
       checkbox: false,
     }),
 
@@ -74,17 +103,31 @@
         !this.$v.checkbox.checked && errors.push('You must agree to continue!')
         return errors
       },
-      selectErrors () {
-        const errors = []
-        if (!this.$v.select.$dirty) return errors
-        !this.$v.select.required && errors.push('Item is required')
-        return errors
-      },
       nameErrors () {
         const errors = []
         if (!this.$v.name.$dirty) return errors
-        !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
         !this.$v.name.required && errors.push('Name is required.')
+        !this.$v.name.alpha && errors.push('Name must be alphabetic only.')
+        return errors
+      },
+      lastPErrors () {
+        const errors = []
+        if (!this.$v.lastNamePat.$dirty) return errors
+        !this.$v.lastNamePat.required && errors.push('Last Name P is required.')
+        !this.$v.lastNamePat.alpha && errors.push('Last Name must be alphabetic only.')
+        return errors
+      },
+      lastMErrors () {
+        const errors = []
+        if (!this.$v.lastNameMat.$dirty) return errors
+        !this.$v.lastNameMat.alpha && errors.push('Last Name M must be alphabetic only.')
+        return errors
+      },
+      phoneErrors () {
+        const errors = []
+        if (!this.$v.principalTelephone.$dirty) return errors
+        !this.$v.principalTelephone.numeric && errors.push('Phone number must be numeric')
+        !this.$v.principalTelephone.required && errors.push('Phone number is required.')
         return errors
       },
       passErrors () {
@@ -107,10 +150,14 @@
       submit () {
         const userData = {
             name: this.name,
+            lastNamePat: this.lastNamePat,
             email: this.email,
-            password: this.password
+            password: this.password, 
+            telephone: this.principalTelephone,
+            isActive: true
           }
         /* eslint-disable no-console */
+        console.log(userData)
         axios.post('https://warm-brushlands-30448.herokuapp.com/api/users', userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
                     console.log(res);
@@ -123,8 +170,11 @@
       clear () {
         this.$v.$reset()
         this.name = ''
+        this.lastNamePat = ''
+        this.lastNameMat = ''
         this.email = ''
         this.password = ''
+        this.principalTelephone = null
         this.select = null
         this.checkbox = false
       },
