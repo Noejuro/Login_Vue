@@ -19,7 +19,7 @@
       <template>
         <v-row>
           <v-col
-            v-for="user in users"
+            v-for="(user, index) in users"
             :key="user.id"
             cols="12"
             sm="6"
@@ -52,7 +52,7 @@
                 <br>
                 <v-list-item>
                   <v-btn small class="ma-1" text icon>
-                    <v-icon >mdi-pencil</v-icon>
+                    <v-icon @click="open(index)">mdi-pencil</v-icon>
                   </v-btn>
 
                   <v-btn absolute right small class="ma-1" text icon>
@@ -88,12 +88,15 @@
                       </v-card-title>
                     </v-card>
                   </v-dialog>
+                  <app-edit-user></app-edit-user>
   </v-container>
+  
   
 </template>
 
 <script>
 import axios from 'axios';
+import Edit from './editUser.vue'
   export default {
     data: () => ({
       usersPerPage: 9,
@@ -131,7 +134,17 @@ import axios from 'axios';
                 .catch(error => {
                     console.log(error);
                     })
+      },
+      open(id) {
+        console.log('open')
+        this.$store.state.selectedID = id;
+        console.log(this.$store.state.selectedID)
+        console.log(this.$store.state.users[this.$store.state.selectedID].name)
+        this.$store.state.showform = true;
       }
+    },
+    components: {
+      appEditUser: Edit
     }
   }
 </script>

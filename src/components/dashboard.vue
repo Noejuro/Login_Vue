@@ -48,7 +48,7 @@
       hide-on-scroll
       right
     >
-      <v-toolbar-title> Welcome {{ this.$store.state.activeUser.name }}!</v-toolbar-title>
+      <v-toolbar-title v-model="this.$store.state.showform"> Welcome {{ this.$store.state.showform }}!</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
@@ -75,6 +75,7 @@
 
 import Table from './table.vue'
 //import SignUp from './sign_up.vue'
+//import Edit from './editUser.vue'
 
   export default {
     props: {
@@ -91,6 +92,7 @@ import Table from './table.vue'
     components: {
       appTable: Table
       //appSignup: SignUp
+      //appEditUser: Edit
     },
     methods: {
       logout() {
