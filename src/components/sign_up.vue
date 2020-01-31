@@ -1,127 +1,133 @@
 <template>
-  <v-container fluid>
-    <v-data-iterator
-      :items="items"
-      :items-per-page.sync="itemsPerPage"
-      hide-default-footer
-    >
-      <template v-slot:header>
-        <v-toolbar
-          class="mb-2"
-          color="purple"
-          dark
-          flat
-        >
-          <v-toolbar-title>Registered users</v-toolbar-title>
-        </v-toolbar>
-      </template>
+  <form>
+    <v-text-field
+      v-model="name"
+      :error-messages="nameErrors"
+      :counter="10"
+      label="Name"
+      required
+      @input="$v.name.$touch()"
+      @blur="$v.name.$touch()"
+    ></v-text-field>
+    <v-text-field
+      v-model="email"
+      :error-messages="emailErrors"
+      label="E-mail"
+      required
+      @input="$v.email.$touch()"
+      @blur="$v.email.$touch()"
+    ></v-text-field>
+    <v-text-field
+      v-model="password"
+      :error-messages="passErrors"
+      label="Password"
+      required
+      @input="$v.password.$touch()"
+      @blur="$v.password.$touch()"
+    ></v-text-field>
+    <v-checkbox
+      v-model="checkbox"
+      :error-messages="checkboxErrors"
+      label="Do you agree?"
+      required
+      @change="$v.checkbox.$touch()"
+      @blur="$v.checkbox.$touch()"
+    ></v-checkbox>
 
-      <template v-slot:default="props">
-        <v-row>
-          <v-col
-            v-for="item in props.items"
-            :key="item.name"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
-          >
-            <v-card>
-              <v-card-title class="subheading font-weight-bold">{{ item.name }}</v-card-title>
-
-              <v-divider></v-divider>
-
-              <v-list dense>
-                <v-list-item>
-                  <v-list-item-content>Calories:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.calories }}</v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Fat:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.fat }}</v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Carbs:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.carbs }}</v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Protein:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.protein }}</v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Sodium:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.sodium }}</v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Calcium:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.calcium }}</v-list-item-content>
-                </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Iron:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.iron }}</v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
-      </template>
-
-    </v-data-iterator>
-  </v-container>
+    <v-btn class="mr-4" @click="submit">submit</v-btn>
+    <v-btn @click="clear">clear</v-btn>
+  </form>
 </template>
 
 <script>
+  import { validationMixin } from 'vuelidate'
+  import { required, maxLength, email, minLength } from 'vuelidate/lib/validators'
+  import axios from 'axios'
+
   export default {
+    mixins: [validationMixin],
+
+    validations: {
+      name: { required, maxLength: maxLength(10) },
+      password: { required, minLength: minLength(5) },
+      email: { required, email },
+      select: { required },
+      checkbox: {
+        checked (val) {
+          return val
+        },
+      },
+    },
+
     data: () => ({
-      itemsPerPage: 4,
-      items: [
-        {
-          name: 'Frozen',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          sodium: 87,
-          calcium: '14%',
-          iron: '1%',
-        },
-        {
-          name: 'Ice sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          sodium: 129,
-          calcium: '8%',
-          iron: '1%',
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-          sodium: 337,
-          calcium: '6%',
-          iron: '7%',
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-          sodium: 413,
-          calcium: '3%',
-          iron: '8%',
-        },
-      ],
+      name: '',
+      password: '',
+      email: '',
+      select: null,
+      checkbox: false,
     }),
+
+    computed: {
+      checkboxErrors () {
+        const errors = []
+        if (!this.$v.checkbox.$dirty) return errors
+        !this.$v.checkbox.checked && errors.push('You must agree to continue!')
+        return errors
+      },
+      selectErrors () {
+        const errors = []
+        if (!this.$v.select.$dirty) return errors
+        !this.$v.select.required && errors.push('Item is required')
+        return errors
+      },
+      nameErrors () {
+        const errors = []
+        if (!this.$v.name.$dirty) return errors
+        !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
+        !this.$v.name.required && errors.push('Name is required.')
+        return errors
+      },
+      passErrors () {
+        const errors = []
+        if (!this.$v.password.$dirty) return errors
+        !this.$v.password.minLength && errors.push('Password must be atleast 5 characters long')
+        !this.$v.password.required && errors.push('Password is required.')
+        return errors
+      },
+      emailErrors () {
+        const errors = []
+        if (!this.$v.email.$dirty) return errors
+        !this.$v.email.email && errors.push('Must be valid e-mail')
+        !this.$v.email.required && errors.push('E-mail is required')
+        return errors
+      },
+    },
+
+    methods: {
+      submit () {
+        const userData = {
+            name: this.name,
+            email: this.email,
+            password: this.password
+          }
+        /* eslint-disable no-console */
+        axios.post('https://warm-brushlands-30448.herokuapp.com/api/users', userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
+                .then(res => {
+                    console.log(res);
+                        })
+                .catch(error => {
+                    console.log(error);
+                    })
+        this.$v.$touch()
+      },
+      clear () {
+        this.$v.$reset()
+        this.name = ''
+        this.email = ''
+        this.password = ''
+        this.select = null
+        this.checkbox = false
+      },
+    },
   }
 </script>

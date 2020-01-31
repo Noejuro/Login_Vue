@@ -16,7 +16,7 @@
         </v-list-item>
         <v-list-item link>
           <v-list-item-action>
-            <v-icon>mdi-nintendo-switch</v-icon>
+            <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Sign up</v-list-item-title>
@@ -65,7 +65,9 @@
 </template>
 
 <script>
-import table from './table.vue'
+
+import Table from './table.vue'
+
   export default {
     props: {
       source: String,
@@ -78,7 +80,7 @@ import table from './table.vue'
       this.$vuetify.theme.dark = true
     },
     components: {
-      appTable: table
+      appTable: Table
     }
   }
 </script>

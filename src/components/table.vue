@@ -41,11 +41,6 @@
                   <v-list-item-content>Email:</v-list-item-content>
                   <v-list-item-content class="align-end">{{ user.email }}</v-list-item-content>
                 </v-list-item>
-
-                <v-list-item>
-                  <v-list-item-content>Phone:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ user.principalTelephone }}</v-list-item-content>
-                </v-list-item>
               </v-list>
             </v-card>
           </v-col>
@@ -60,12 +55,11 @@
 import axios from 'axios';
   export default {
     data: () => ({
-      usersPerPage: 3,
+      usersPerPage: 5,
       users: [ 
         'id', 
         'name', 
-        'email',
-        'principalTelephone' ]
+        'email' ]
     }),
     created() {
         /* eslint-disable no-console */
