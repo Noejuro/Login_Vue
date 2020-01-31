@@ -4,6 +4,8 @@
       v-model="drawer"
       app
       clipped
+      permanent
+      expand-on-hover      
     >
       <v-list dense>
         <v-list-item link>
@@ -23,16 +25,20 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-item>
-          <v-list-item-content>
+          <v-list-item-content >
             <v-switch
               v-model="$vuetify.theme.dark"
               hide-details
-              inset
               label="Theme Dark"
             ></v-switch>
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block outlined>Logout</v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
 
     <v-app-bar
@@ -40,8 +46,7 @@
       clipped-left
       right
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>Welcome {{ this.$store.state.activeUser.name }}!</v-toolbar-title>
+      <v-toolbar-title> Welcome {{ this.$store.state.activeUser.name }}!</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
@@ -59,7 +64,7 @@
     </v-content>
 
     <v-footer app>
-      <span>&copy; HermmesCorp 2020</span>
+      <span>@Neeoon 2020</span>
     </v-footer>
   </v-app>
 </template>
@@ -75,7 +80,8 @@ import Table from './table.vue'
     },
     data: () => ({
       drawer: null,
-      userName: ''
+      userName: '',
+      mini: true
     }),
     created () {
       this.$vuetify.theme.dark = true

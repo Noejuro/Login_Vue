@@ -34,6 +34,11 @@
               <v-list dense>
 
                 <v-list-item>
+                  <v-list-item-content>ID:</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ user._id }}</v-list-item-content>
+                </v-list-item>
+
+                <v-list-item>
                   <v-list-item-content>Last Name:</v-list-item-content>
                   <v-list-item-content left
                    class="align-end">{{ user.lastNamePat }} {{ user.lastNameMat }} </v-list-item-content>
@@ -51,13 +56,14 @@
                 </v-list-item>
                 <br>
                 <v-list-item>
-                  <v-btn  x small class="ma-1"  fab color="red darken-5">
-                    <v-icon color="white">mdi-delete</v-icon>
+                  <v-btn small class="ma-1" text icon>
+                    <v-icon >mdi-pencil</v-icon>
                   </v-btn>
-                   
-                  <v-btn absolute right x small class="ma-1"   fab color="indigo darken-5">
-                    <v-icon color="white">mdi-pencil</v-icon>
+
+                  <v-btn absolute right small class="ma-1" text icon>
+                    <v-icon @click="Delete(user._id)">mdi-delete</v-icon>
                   </v-btn>
+
                 </v-list-item>
                 
               </v-list>
@@ -95,6 +101,19 @@ import axios from 'axios';
                 .catch(error => {
                     console.log(error);
                     })
+    },
+    methods: {
+      Delete(id) {
+        console.log(id)
+        console.log('Delete');
+        axios.delete('https://warm-brushlands-30448.herokuapp.com/api/users/' + id, {params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
+                .then(res => {
+                    console.log(res);
+                        })
+                .catch(error => {
+                    console.log(error);
+                    })
+      }
     }
   }
 </script>

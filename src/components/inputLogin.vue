@@ -70,7 +70,7 @@
               <v-card-actions>
                 <v-spacer />
                 <v-col cols="12">
-                    <v-btn style="width: 100%" color="success" @click="Submit">Login</v-btn>    
+                    <v-btn block color="success" @click="Submit">Login</v-btn>    
                 </v-col>
               </v-card-actions>
             </v-card>
