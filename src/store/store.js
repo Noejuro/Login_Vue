@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export const store =  new Vuex.Store({
     state: {
         activeUser: ['name', 'email', 'token'],
-        users: ['id', 'name', 'lastNamePat', 'lastNameMat', 'email', 'principalTelephone', 'v'],
+        users: ['id', 'name', 'lastNamePat', 'lastNameMat', 'email', 'principalTelephone', 'isActive', 'v'],
         show_alert: true,
         showform: false,
         selectedID: 0

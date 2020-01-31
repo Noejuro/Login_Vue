@@ -27,8 +27,12 @@
             lg="4"
           >
             <v-card>
-              <v-card-title class="subheading font-weight-bold">{{ user.name }}</v-card-title>
-
+              <v-card-title class="subheading font-weight-bold">{{ user.name }}
+                <v-btn absolute right v-model="users[index].isActive" v-if="!users[index].isActive" small class="ma-1" text icon>
+                    <v-icon color="red">mdi-block-helper</v-icon>
+                  </v-btn>
+              </v-card-title>
+               
               <v-divider></v-divider>
 
               <v-list dense>
@@ -55,11 +59,19 @@
                     <v-icon @click="open(index)">mdi-pencil</v-icon>
                   </v-btn>
 
-                  <v-btn absolute right small class="ma-1" text icon>
-                    <v-icon @click="Delete(user._id)"
+
+                  <v-btn absolute right small class="ma-1" text icon v-if="user.isActive">
+                    <v-icon @click="Delete(index, user._id, 'Deleted')"
                     :disabled="dialog"
                     :loading="dialog"
                     >mdi-delete</v-icon>
+                  </v-btn>
+
+                  <v-btn absolute right small class="ma-1" text icon v-if="!user.isActive">
+                    <v-icon @click="Delete(index, user._id, 'Added')"
+                    :disabled="dialog"
+                    :loading="dialog"
+                    >mdi-plus</v-icon>
                   </v-btn>
 
                 </v-list-item>
@@ -84,7 +96,7 @@
                         <v-icon large left color="white" >
                           mdi-check
                         </v-icon>
-                        <span style="color: white;">Deleted</span>
+                        <span style="color: white;">{{ statusName }}</span>
                       </v-card-title>
                     </v-card>
                   </v-dialog>
@@ -106,8 +118,10 @@ import Edit from './editUser.vue'
         'lastNamePat', 
         'lastNameMat', 
         'email', 
-        'principalTelephone'],
-        dialog: false
+        'principalTelephone',
+        'isActive',],
+        dialog: false,
+        statusName: 'Deleted',
     }),
     created() {
         /* eslint-disable no-console */
@@ -122,13 +136,32 @@ import Edit from './editUser.vue'
                     })
     },
     methods: {
-      Delete(id) {
+      refresh(index, id) {
+        /* eslint-disable no-console */
+        console.log('Refresh')
+        console.log(id);
+        axios.get('https://warm-brushlands-30448.herokuapp.com/api/users/' + id, {params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
+                .then(res => {
+                    console.log(res);
+                    this.$store.state.users[index] = res.data
+                    this.users[index] = res.data
+                    console.log('Refresh saved')
+                        })
+                .catch(error => {
+                    console.log(error);
+                    })
+      },
+      Delete(index, id, statusName) {
+        this.statusName = statusName;
         console.log(id)
         console.log('Delete');
         axios.delete('https://warm-brushlands-30448.herokuapp.com/api/users/' + id, {params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
                 .then(res => {
                     console.log(res);
                     this.dialog = true;
+                    this.$store.state.users[index].isActive = !this.$store.state.users[index].isActive
+                    this.users[index].isActive = !this.users[index].isActive
+                    this.refresh(index,id);
                     setTimeout(() => (this.dialog = false), 1250);
                         })
                 .catch(error => {
