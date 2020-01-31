@@ -34,13 +34,28 @@
               <v-list dense>
                 <v-list-item>
                   <v-list-item-content>ID:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ user._id }}</v-list-item-content>
+                  <v-list-item-content left
+                   class="align-end">{{ user._id }}</v-list-item-content>
+                </v-list-item>
+
+                <v-list-item>
+                  <v-list-item-content>Last Name:</v-list-item-content>
+                  <v-list-item-content left
+                   class="align-end">{{ user.lastNamePat }} {{ user.lastNameMat }} </v-list-item-content>
                 </v-list-item>
 
                 <v-list-item>
                   <v-list-item-content>Email:</v-list-item-content>
                   <v-list-item-content class="align-end">{{ user.email }}</v-list-item-content>
                 </v-list-item>
+
+                <v-list-item>
+                  <v-list-item-content>Telephone:</v-list-item-content>
+                  <v-list-item-content
+                   class="align-end">{{ user.principalTelephone }}</v-list-item-content>
+                </v-list-item>
+
+                
               </v-list>
             </v-card>
           </v-col>
@@ -56,10 +71,13 @@ import axios from 'axios';
   export default {
     data: () => ({
       usersPerPage: 5,
-      users: [ 
+      users: [
         'id', 
         'name', 
-        'email' ]
+        'lastNamePat', 
+        'lastNameMat', 
+        'email', 
+        'principalTelephone']
     }),
     created() {
         /* eslint-disable no-console */
@@ -68,6 +86,7 @@ import axios from 'axios';
                     console.log(res);
                     this.$store.state.users = res.data
                     this.users = res.data
+                    console.log(this.users[8]);
                         })
                 .catch(error => {
                     console.log(error);

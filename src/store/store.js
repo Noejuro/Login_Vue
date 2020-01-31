@@ -6,6 +6,6 @@ Vue.use(Vuex);
 export const store =  new Vuex.Store({
     state: {
         activeUser: ['name', 'email', 'token'],
-        users: ['id', 'name', 'email', 'v']
+        users: ['id', 'name', 'lastNamePat', 'lastNameMat', 'email', 'principalTelephone', 'v']
     }
 });
