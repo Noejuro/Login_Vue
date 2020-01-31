@@ -156,19 +156,18 @@
     methods: {
       submit () {
         const userData = {
-            name: this.name,
-            lastNamePat: this.lastNamePat,
-            email: this.email,
-            password: this.password, 
-            telephone: this.principalTelephone,
+            name: this.$store.state.users[this.$store.state.selectedID].name,
+            lastNamePat: this.$store.state.users[this.$store.state.selectedID].lastNamePat,
+            email: this.$store.state.users[this.$store.state.selectedID].email,
+            telephone: this.$store.state.users[this.$store.state.selectedID].principalTelephone,
             isActive: true
           }
         if(this.lastNameMat != '') {
-          this.$set(userData, 'lastNameMat', this.lastNameMat);
+          this.$set(userData, 'lastNameMat', this.$store.state.users[this.$store.state.selectedID].lastNameMat);
         }
         /* eslint-disable no-console */
         console.log(userData)
-        axios.post('https://warm-brushlands-30448.herokuapp.com/api/users', userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
+        axios.put('https://warm-brushlands-30448.herokuapp.com/api/users'+this.$store.state.users[this.$store.state.selectedID].id, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
                     console.log(res);
                     this.dialog = false
@@ -190,8 +189,25 @@
         this.checkbox = false
       },
       hide () {
+        this.$v.$reset()
+        this.name = ''
+        this.lastNamePat = ''
+        this.lastNameMat = ''
+        this.email = ''
+        this.password = ''
+        this.principalTelephone = null
+        this.select = null
+        this.checkbox = false
         this.$store.state.showform = false;
-      }
+      },
     },
+   /* created() {
+        console.log('Created');
+        this.name = this.$store.state.users[this.$store.state.selectedID].name
+        this.lastNamePat = this.$store.state.users[this.$store.state.selectedID].lastNamePat
+        this.lastNameMat = this.$store.state.users[this.$store.state.selectedID].lastNameMat
+        this.principalTelephone = this.lastNamePat = this.$store.state.users[this.$store.state.selectedID].principalTelephone
+        this.principalTelephone = this.lastNamePat = this.$store.state.users[this.$store.state.selectedID].isActive
+      }*/
   }
 </script>

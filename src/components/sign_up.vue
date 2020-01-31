@@ -164,6 +164,7 @@
         axios.post('https://warm-brushlands-30448.herokuapp.com/api/users', userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
                     console.log(res);
+                    this.$router.push({name: 'dashboard'})
                         })
                 .catch(error => {
                     console.log(error);
