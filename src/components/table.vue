@@ -81,10 +81,10 @@
                       color="green"
                     >
                       <v-card-title>
-                        <v-icon large left >
+                        <v-icon large left color="white" >
                           mdi-check
                         </v-icon>
-                        <span>Deleted</span>
+                        <span style="color: white;">Deleted</span>
                       </v-card-title>
                     </v-card>
                   </v-dialog>
@@ -126,7 +126,7 @@ import axios from 'axios';
                 .then(res => {
                     console.log(res);
                     this.dialog = true;
-                    setTimeout(() => (this.dialog = false), 1000);
+                    setTimeout(() => (this.dialog = false), 1250);
                         })
                 .catch(error => {
                     console.log(error);
