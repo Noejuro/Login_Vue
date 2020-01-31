@@ -56,11 +56,13 @@
                   </v-btn>
 
                   <v-btn absolute right small class="ma-1" text icon>
-                    <v-icon @click="Delete(user._id)">mdi-delete</v-icon>
+                    <v-icon @click="Delete(user._id)"
+                    :disabled="dialog"
+                    :loading="dialog"
+                    >mdi-delete</v-icon>
                   </v-btn>
 
                 </v-list-item>
-                
               </v-list>
             </v-card>
           </v-col>
@@ -68,7 +70,26 @@
       </template>
 
     </v-data-iterator>
+     <v-dialog
+                    v-model="dialog"
+                    hide-overlay
+                    persistent
+                    width="300"
+                  >
+                    <v-card
+                      class="mx-auto"
+                      color="green"
+                    >
+                      <v-card-title>
+                        <v-icon large left >
+                          mdi-check
+                        </v-icon>
+                        <span>Deleted</span>
+                      </v-card-title>
+                    </v-card>
+                  </v-dialog>
   </v-container>
+  
 </template>
 
 <script>
@@ -82,7 +103,8 @@ import axios from 'axios';
         'lastNamePat', 
         'lastNameMat', 
         'email', 
-        'principalTelephone']
+        'principalTelephone'],
+        dialog: false
     }),
     created() {
         /* eslint-disable no-console */
@@ -91,7 +113,6 @@ import axios from 'axios';
                     console.log(res);
                     this.$store.state.users = res.data
                     this.users = res.data
-                    console.log(this.users[8]);
                         })
                 .catch(error => {
                     console.log(error);
@@ -104,6 +125,8 @@ import axios from 'axios';
         axios.delete('https://warm-brushlands-30448.herokuapp.com/api/users/' + id, {params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
                 .then(res => {
                     console.log(res);
+                    this.dialog = true;
+                    setTimeout(() => (this.dialog = false), 1000);
                         })
                 .catch(error => {
                     console.log(error);
