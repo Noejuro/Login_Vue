@@ -36,7 +36,7 @@
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn block outlined>Logout</v-btn>
+          <v-btn @click="logout" outlined block>Logout</v-btn>
         </div>
       </template>
     </v-navigation-drawer>
@@ -44,6 +44,8 @@
     <v-app-bar
       app
       clipped-left
+      dense
+      hide-on-scroll
       right
     >
       <v-toolbar-title> Welcome {{ this.$store.state.activeUser.name }}!</v-toolbar-title>
@@ -89,6 +91,12 @@ import Table from './table.vue'
     components: {
       appTable: Table
       //appSignup: SignUp
+    },
+    methods: {
+      logout() {
+        this.$router.push({name: 'login'})
+      }
+      
     }
   }
 </script>
