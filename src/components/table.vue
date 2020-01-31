@@ -100,10 +100,11 @@
                         <span style="color: white;">{{ statusName }}</span>
                       </v-card-title>
                     </v-card>
-                  </v-dialog>
+    </v-dialog>
                   
 
-                   <v-row justify="center">
+
+    <v-row justify="center">
                     <v-dialog light persistent v-model="this.$store.state.showform" max-width="500px">
                       <v-card>
                         <v-row
@@ -118,11 +119,11 @@
                                 required
                                 @input="$v.name.$touch()"
                                 @blur="$v.name.$touch()"
-                                v-model = "this.$store.state.users[this.$store.state.selectedID].name"
+                                v-model = "this.activeUser.name"
                                 ></v-text-field>
 
                                 <v-text-field
-                                v-model = "this.$store.state.users[this.$store.state.selectedID].lastNamePat"
+                                v-model = "this.activeUser.lastNamePat"
                                 :error-messages="lastPErrors"
                                 label="Last Name P"
                                 required
@@ -131,14 +132,14 @@
                                 ></v-text-field>
 
                                 <v-text-field
-                                v-model = "this.$store.state.users[this.$store.state.selectedID].lastNameMat"
+                                v-model = "this.activeUser.lastNameMat"
                                 :error-messages="lastMErrors"
                                 label="Last Name Mat"
                                 @input="$v.lastNameMat.$touch()"
                                 @blur="$v.lastNameMat.$touch()"
                                 ></v-text-field>
                                 <v-text-field
-                                v-model = "this.$store.state.users[this.$store.state.selectedID].principalTelephone"
+                                v-model = "this.activeUser.principalTelephone"
                                 :error-messages="phoneErrors"
                                 label="Phone Number"
                                 required
@@ -147,7 +148,7 @@
                                 ></v-text-field>
 
                                 <v-text-field
-                                v-model = "this.$store.state.users[this.$store.state.selectedID].email"
+                                v-model = "this.activeUser.email"
                                 :error-messages="emailErrors"
                                 label="E-mail"
                                 required
