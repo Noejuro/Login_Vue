@@ -35,7 +35,7 @@
                     label="Email"
                     name="email"
                     type="text"
-                    color="white"
+                    color="black"
                     clear-icon="mdi-close-circle"
                     suffix="@gmail.com"
                     clearable
@@ -52,7 +52,7 @@
                     id="password"
                     label="Password"
                     name="password"
-                    color="white"
+                    color="black"
                     clear-icon="mdi-close-circle"
                     v-model="userPa"
                       
@@ -69,7 +69,7 @@
               <v-card-actions>
                 <v-spacer />
                 <v-col cols="12">
-                    <v-btn block color="white" style="color: black;" @click="Submit">Login</v-btn>    
+                    <v-btn block color="black" style="color: white;" @click="Submit">Login</v-btn>    
                 </v-col>
               </v-card-actions>
             </v-card>
@@ -126,7 +126,7 @@ export default {
         }
     },
     created() {
-      this.$vuetify.theme.dark = true;
+      this.$vuetify.theme.dark = false;
     }
 }
 </script>

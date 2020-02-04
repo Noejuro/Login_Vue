@@ -8,20 +8,20 @@
       expand-on-hover      
     >
       <v-list dense>
-        <v-list-item link>
+        <v-list-item link @click="routeToDashboard">
           <v-list-item-action>
-            <v-icon @click="routeToDashboard">mdi-view-dashboard</v-icon>
+            <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title @click="routeToDashboard">Dashboard</v-list-item-title>
+            <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item link @click="routeToSignUp">
           <v-list-item-action>
-            <v-icon @click="routeToSignUp">mdi-account-plus</v-icon>
+            <v-icon >mdi-account-plus</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title @click="routeToSignUp">Sign up</v-list-item-title>
+            <v-list-item-title>Sign up</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item>
@@ -36,7 +36,10 @@
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn @click="logout" outlined block>Logout</v-btn>
+          <v-btn @click="logout" outlined block>
+            <v-icon @click="Delete(index, user._id, 'Deleted')"
+                    >mdi-logout</v-icon>
+          </v-btn>
         </div>
       </template>
     </v-navigation-drawer>

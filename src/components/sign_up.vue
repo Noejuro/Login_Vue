@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @click="show = false">
     <v-text-field
       v-model="name"
       :error-messages="nameErrors"
@@ -58,7 +58,6 @@
       @change="$v.checkbox.$touch()"
       @blur="$v.checkbox.$touch()"
     ></v-checkbox>
-
     <v-btn class="mr-4" @click="submit">submit</v-btn>
     <v-btn @click="clear">clear</v-btn>
   </form>
@@ -94,6 +93,7 @@
       email: '',
       principalTelephone: null,
       checkbox: false,
+      show: false
     }),
 
     computed: {
@@ -168,6 +168,7 @@
                         })
                 .catch(error => {
                     console.log(error);
+                    this.show = true;
                     })
         this.$v.$touch()
       },
