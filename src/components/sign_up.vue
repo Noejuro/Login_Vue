@@ -60,6 +60,17 @@
     ></v-checkbox>
     <v-btn class="mr-4" @click="submit">submit</v-btn>
     <v-btn @click="clear">clear</v-btn>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout= 1500
+      color = 'green'
+    >User Added</v-snackbar>
+    <v-snackbar
+      v-model="errMess"
+      :timeout= 3000
+      block
+      color = 'red'
+    >   {{ errorMessage }}</v-snackbar>
   </form>
 </template>
 
@@ -91,9 +102,13 @@
       lastNameMat: '',
       password: '',
       email: '',
+      colorMessage: 'green',
       principalTelephone: null,
       checkbox: false,
-      show: false
+      show: false,
+      snackbar: false,
+      errMess: false,
+      errorMessage: ''
     }),
 
     computed: {
@@ -164,11 +179,15 @@
         axios.post('https://warm-brushlands-30448.herokuapp.com/api/users', userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
                     console.log(res);
+                    this.snackbar = true;
                     this.clear()
                         })
                 .catch(error => {
                     console.log(error);
+                    console.log(error.response.data);
                     this.show = true;
+                    this.errMess = true;
+                    this.errorMessage = error.response.data
                     })
         this.$v.$touch()
       },

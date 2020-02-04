@@ -12,7 +12,7 @@
           dark
           flat
         >
-          <v-toolbar-title>Registered users</v-toolbar-title>
+          <v-toolbar-title>Registered Users</v-toolbar-title>
         </v-toolbar>
       </template>
 
