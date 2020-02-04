@@ -15,8 +15,7 @@
           >
             <v-card class="elevation-12">
               <v-toolbar
-                color="purple"
-                dark
+                light
                 flat
               >
                 <v-toolbar-title>Welcome Back!</v-toolbar-title>
@@ -36,7 +35,7 @@
                     label="Email"
                     name="email"
                     type="text"
-                    color="purple"
+                    color="white"
                     clear-icon="mdi-close-circle"
                     suffix="@gmail.com"
                     clearable
@@ -53,10 +52,10 @@
                     id="password"
                     label="Password"
                     name="password"
-                    color="purple"
+                    color="white"
                     clear-icon="mdi-close-circle"
                     v-model="userPa"
-                    clearable
+                      
                     filled
                     shaped
                     outlined
@@ -70,7 +69,7 @@
               <v-card-actions>
                 <v-spacer />
                 <v-col cols="12">
-                    <v-btn block color="success" @click="Submit">Login</v-btn>    
+                    <v-btn block color="white" style="color: black;" @click="Submit">Login</v-btn>    
                 </v-col>
               </v-card-actions>
             </v-card>
@@ -127,7 +126,7 @@ export default {
         }
     },
     created() {
-      this.$vuetify.theme.dark = false
+      this.$vuetify.theme.dark = true;
     }
 }
 </script>

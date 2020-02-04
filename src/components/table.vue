@@ -26,7 +26,7 @@
             md="4"
             lg="4"
           >
-            <v-card>
+            <v-card >
               <v-card-title class="subheading font-weight-bold">{{ user.name }}
                 <v-btn absolute right v-model="users[index].isActive" v-if="!users[index].isActive" small class="ma-1" text icon>
                     <v-icon color="red">mdi-block-helper</v-icon>
@@ -35,7 +35,7 @@
                
               <v-divider></v-divider>
 
-              <v-list dense>
+              <v-list dense light>
 
                 <v-list-item>
                   <v-list-item-content>Last Name:</v-list-item-content>
