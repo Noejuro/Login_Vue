@@ -1,5 +1,5 @@
 <template>
-  <form @click="show = false">
+  <form>
     <v-text-field
       v-model="name"
       :error-messages="nameErrors"
@@ -43,6 +43,7 @@
       @blur="$v.email.$touch()"
     ></v-text-field>
     <v-text-field
+      v-if="!this.$store.state.modeEdit"
       v-model="password"
       :error-messages="passErrors"
       label="Password"
@@ -58,8 +59,9 @@
       @change="$v.checkbox.$touch()"
       @blur="$v.checkbox.$touch()"
     ></v-checkbox>
-    <v-btn class="mr-4" @click="submit">submit</v-btn>
-    <v-btn @click="clear">clear</v-btn>
+    <v-btn class="mr-4" @click="submit">Submit</v-btn>
+    <v-btn v-if="!this.$store.state.modeEdit" @click="clear">Clear</v-btn>
+    <v-btn v-if="this.$store.state.modeEdit" @click="clear">Close</v-btn>
     <v-snackbar
       v-model="snackbar"
       :timeout= 1500
@@ -68,7 +70,6 @@
     <v-snackbar
       v-model="errMess"
       :timeout= 3000
-      block
       color = 'red'
     >   {{ errorMessage }}</v-snackbar>
   </form>
@@ -98,12 +99,11 @@
 
     data: () => ({
       name: '',
-      lastNamePat: '',
-      lastNameMat: '',
-      password: '',
-      email: '',
-      colorMessage: 'green',
-      principalTelephone: null,
+        lastNamePat: '',
+        lastNameMat: '',
+        password: '',
+        email: '',
+        principalTelephone: null, 
       checkbox: false,
       show: false,
       snackbar: false,
@@ -167,14 +167,42 @@
             name: this.name,
             lastNamePat: this.lastNamePat,
             email: this.email,
-            password: this.password, 
             telephone: this.principalTelephone,
             isActive: true
           }
         if(this.lastNameMat != '') {
           this.$set(userData, 'lastNameMat', this.lastNameMat);
         }
+                /* eslint-disable no-console */
+
+        if(this.$store.state.modeEdit == true) {
+          console.log('Put');
+          console.log(userData);
+          axios.put('https://warm-brushlands-30448.herokuapp.com/api/users/'+this.$store.state.selectedID, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
+                .then(res => {
+                    console.log(res);
+                    this.users[this.$store.state.selectedINDEX] = res.data;
+                    this.users[this.$store.state.selectedINDEX].principalTelephone = res.data.telephone;
+                    console.log(this.users[this.$store.state.selectedINDEX]);
+                    this.$store.state.users = this.users;
+                    this.$store.state.modeEdit = false;
+                    this.dialog = false
+                    this.clear()
+                        })
+                .catch(error => {
+                    console.log('Showing err');
+                    console.log(error);
+                    console.log(error.response.data);
+                    this.show = true;
+                    this.errMess = true;
+                    this.errorMessage = error.response.data;
+                    })
+        }
+        else {
         /* eslint-disable no-console */
+        this.$set(userData, 'password', this.password);
+        console.log(userData);
+        console.log('Post');
         console.log(userData)
         axios.post('https://warm-brushlands-30448.herokuapp.com/api/users', userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
@@ -187,12 +215,12 @@
                     console.log(error.response.data);
                     this.show = true;
                     this.errMess = true;
-                    this.errorMessage = error.response.data
+                    this.errorMessage = error.response.data;
                     })
+        }
         this.$v.$touch()
       },
       clear () {
-        this.$v.$reset()
         this.name = ''
         this.lastNamePat = ''
         this.lastNameMat = ''
@@ -201,7 +229,17 @@
         this.principalTelephone = null
         this.select = null
         this.checkbox = false
+        this.$store.state.modeEdit = false
+        this.$v.$reset()
       },
     },
+    destroyed() {
+      console.log('Destroyed Sign Up');
+      this.$store.state.modeEdit = false;
+    },
+    created() {
+      console.log('Created Sign Up');
+      console.log(this.$store.state.modeEdit);
+    }
   }
 </script>

@@ -7,8 +7,11 @@ export const store =  new Vuex.Store({
     state: {
         activeUser: ['name', 'email', 'token'],
         users: ['id', 'name', 'lastNamePat', 'lastNameMat', 'email', 'principalTelephone', 'isActive', 'v'],
+        selectedUser: ['id', 'name', 'lastNamePat', 'lastNameMat', 'email', 'principalTelephone', 'isActive', 'v'],
         show_alert: true,
         showform: false,
-        selectedID: 0
+        modeEdit: false,
+        selectedID: 0,
+        selectedINDEX: 0
     }
 });

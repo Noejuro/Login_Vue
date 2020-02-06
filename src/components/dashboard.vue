@@ -37,8 +37,7 @@
       <template v-slot:append>
         <div class="pa-2">
           <v-btn @click="logout" outlined block>
-            <v-icon @click="Delete(index, user._id, 'Deleted')"
-                    >mdi-logout</v-icon>
+            <v-icon>mdi-logout</v-icon>
           </v-btn>
         </div>
       </template>
@@ -51,7 +50,7 @@
       hide-on-scroll
       right
     >
-      <v-toolbar-title v-model="this.$store.state.showform"> Welcome {{ this.$store.state.activeUser.name }}!</v-toolbar-title>
+      <v-toolbar-title v-model="this.$store.state.modeEdit"> Welcome {{ this.$store.state.activeUser.name }}!</v-toolbar-title>
     </v-app-bar>
 
     <v-content>

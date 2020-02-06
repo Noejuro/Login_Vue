@@ -1,73 +1,89 @@
 <template>
-  <v-row justify="center">
-    <v-dialog light persistent v-model="this.$store.state.showform" max-width="500px">
-      <v-card>
-        <v-row
-          align="center"
-          justify="center"
-        >
-              <v-form>
-                  <br>
-                <v-text-field
-                :error-messages="nameErrors"
-                label="Name"
-                required
-                @input="$v.name.$touch()"
-                @blur="$v.name.$touch()"
-                v-model = "this.$store.state.users[this.$store.state.selectedID].name"
-                ></v-text-field>
+  <v-dialog light persistent v-model="this.$store.state.modeEdit" max-width="500px">
+    <v-card>
+      <v-row align="center" justify="center">
+                            
 
-                <v-text-field
-                v-model = "this.$store.state.users[this.$store.state.selectedID].lastNamePat"
-                :error-messages="lastPErrors"
-                label="Last Name P"
-                required
-                @input="$v.lastNamePat.$touch()"
-                @blur="$v.lastNamePat.$touch()"
-                ></v-text-field>
 
-                <v-text-field
-                v-model = "this.$store.state.users[this.$store.state.selectedID].lastNameMat"
-                :error-messages="lastMErrors"
-                label="Last Name Mat"
-                @input="$v.lastNameMat.$touch()"
-                @blur="$v.lastNameMat.$touch()"
-                ></v-text-field>
-                <v-text-field
-                v-model = "this.$store.state.users[this.$store.state.selectedID].principalTelephone"
-                :error-messages="phoneErrors"
-                label="Phone Number"
-                required
-                @input="$v.principalTelephone.$touch()"
-                @blur="$v.principalTelephone.$touch()"
-                ></v-text-field>
+        <form>
+          <v-text-field
+            v-model="name"
+            :error-messages="nameErrors"
+            label="Name"
+            required
+            @input="$v.name.$touch()"
+            @blur="$v.name.$touch()"
+          ></v-text-field>
 
-                <v-text-field
-                v-model = "this.$store.state.users[this.$store.state.selectedID].email"
-                :error-messages="emailErrors"
-                label="E-mail"
-                required
-                @input="$v.email.$touch()"
-                @blur="$v.email.$touch()"
-                ></v-text-field>
-                
-                <v-checkbox
-                v-model="checkbox"
-                :error-messages="checkboxErrors"
-                label="Do you agree?"
-                required
-                @change="$v.checkbox.$touch()"
-                @blur="$v.checkbox.$touch()"
-                ></v-checkbox>
+          <v-text-field
+            v-model="lastNamePat"
+            :error-messages="lastPErrors"
+            label="Last Name P"
+            required
+            @input="$v.lastNamePat.$touch()"
+            @blur="$v.lastNamePat.$touch()"
+          ></v-text-field>
 
-                <v-btn class="mr-4" @click="submit">Submit</v-btn>
-                <v-btn @click="hide">Close</v-btn>
-                <br><br>
-              </v-form>
-        </v-row>
-        </v-card>
-    </v-dialog>
-  </v-row>
+          <v-text-field
+            v-model="lastNameMat"
+            :error-messages="lastMErrors"
+            label="Last Name Mat"
+            @input="$v.lastNameMat.$touch()"
+            @blur="$v.lastNameMat.$touch()"
+          ></v-text-field>
+          <v-text-field
+            v-model="principalTelephone"
+            :error-messages="phoneErrors"
+            label="Phone Number"
+            required
+            @input="$v.principalTelephone.$touch()"
+            @blur="$v.principalTelephone.$touch()"
+          ></v-text-field>
+
+          <v-text-field
+            v-model="email"
+            :error-messages="emailErrors"
+            label="E-mail"
+            required
+            @input="$v.email.$touch()"
+            @blur="$v.email.$touch()"
+          ></v-text-field>
+          <v-text-field
+            v-if="!this.$store.state.modeEdit"
+            v-model="password"
+            :error-messages="passErrors"
+            label="Password"
+            required
+            @input="$v.password.$touch()"
+            @blur="$v.password.$touch()"
+          ></v-text-field>
+          <v-checkbox
+            v-model="checkbox"
+            :error-messages="checkboxErrors"
+            label="Do you agree?"
+            required
+            @change="$v.checkbox.$touch()"
+            @blur="$v.checkbox.$touch()"
+          ></v-checkbox>
+          <v-btn class="mr-4" @click="submit">Submit</v-btn>
+          <v-btn v-if="!this.$store.state.modeEdit" @click="clear">Clear</v-btn>
+          <v-btn v-if="this.$store.state.modeEdit" @click="clear">Close</v-btn>
+          <v-snackbar
+            v-model="snackbar"
+            :timeout= 1500
+            color = 'green'
+          >User Added</v-snackbar>
+          <v-snackbar
+            v-model="errMess"
+            :timeout= 3000
+            color = 'red'
+          >   {{ errorMessage }}</v-snackbar>
+    </form>
+
+
+      </v-row>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -93,14 +109,25 @@
     },
 
     data: () => ({
+      props: {
+        name: '',
+        lastNamePat: '',
+        lastNameMat: '',
+        password: '',
+        email: '',
+        principalTelephone: null,
+      },
       name: '',
-      lastNamePat: '',
-      lastNameMat: '',
-      password: '',
-      email: '',
-      principalTelephone: null,
+        lastNamePat: '',
+        lastNameMat: '',
+        password: '',
+        email: '',
+        principalTelephone: null, 
       checkbox: false,
-      dialog: false
+      show: false,
+      snackbar: false,
+      errMess: false,
+      errorMessage: ''
     }),
 
     computed: {
@@ -165,20 +192,54 @@
         if(this.lastNameMat != '') {
           this.$set(userData, 'lastNameMat', this.lastNameMat);
         }
-        /* eslint-disable no-console */
-        console.log(userData)
-        axios.put('https://warm-brushlands-30448.herokuapp.com/api/users'+this.$store.state.users[this.$store.state.selectedID].id, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
+                /* eslint-disable no-console */
+
+        if(this.$store.state.modeEdit == true) {
+          console.log('Put');
+          console.log(userData);
+          axios.put('https://warm-brushlands-30448.herokuapp.com/api/users/'+this.$store.state.selectedID, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
                     console.log(res);
+                    this.users[this.$store.state.selectedINDEX] = res.data;
+                    this.users[this.$store.state.selectedINDEX].principalTelephone = res.data.telephone;
+                    console.log(this.users[this.$store.state.selectedINDEX]);
+                    this.$store.state.users = this.users;
+                    this.$store.state.modeEdit = false;
                     this.dialog = false
+                    this.clear()
+                        })
+                .catch(error => {
+                    console.log('Showing err');
+                    console.log(error);
+                    console.log(error.response.data);
+                    this.show = true;
+                    this.errMess = true;
+                    this.errorMessage = error.response.data;
+                    })
+        }
+        else {
+        /* eslint-disable no-console */
+        this.$set(userData, 'password', this.password);
+        console.log(userData);
+        console.log('Post');
+        console.log(userData)
+        axios.post('https://warm-brushlands-30448.herokuapp.com/api/users', userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
+                .then(res => {
+                    console.log(res);
+                    this.snackbar = true;
+                    this.clear()
                         })
                 .catch(error => {
                     console.log(error);
+                    console.log(error.response.data);
+                    this.show = true;
+                    this.errMess = true;
+                    this.errorMessage = error.response.data;
                     })
+        }
         this.$v.$touch()
       },
       clear () {
-        this.$v.$reset()
         this.name = ''
         this.lastNamePat = ''
         this.lastNameMat = ''
@@ -187,27 +248,17 @@
         this.principalTelephone = null
         this.select = null
         this.checkbox = false
-      },
-      hide () {
+        this.$store.state.modeEdit = false
         this.$v.$reset()
-        this.name = ''
-        this.lastNamePat = ''
-        this.lastNameMat = ''
-        this.email = ''
-        this.password = ''
-        this.principalTelephone = null
-        this.select = null
-        this.checkbox = false
-        this.$store.state.showform = false;
       },
     },
-   /* created() {
-        console.log('Created');
-        this.name = this.$store.state.users[this.$store.state.selectedID].name
-        this.lastNamePat = this.$store.state.users[this.$store.state.selectedID].lastNamePat
-        this.lastNameMat = this.$store.state.users[this.$store.state.selectedID].lastNameMat
-        this.principalTelephone = this.lastNamePat = this.$store.state.users[this.$store.state.selectedID].principalTelephone
-        this.principalTelephone = this.lastNamePat = this.$store.state.users[this.$store.state.selectedID].isActive
-      }*/
+    destroyed() {
+      console.log('Destroyed Sign Up');
+      this.$store.state.modeEdit = false;
+    },
+    created() {
+      console.log('Created Sign Up');
+      console.log(this.$store.state.modeEdit);
+    }
   }
 </script>

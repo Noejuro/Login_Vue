@@ -103,77 +103,21 @@
     </v-dialog>
                   
 
-
+<!--
     <v-row justify="center">
-                    <v-dialog light persistent v-model="this.$store.state.showform" max-width="500px">
+                    <v-dialog light persistent v-model="this.$store.state.modeEdit" max-width="500px">
                       <v-card>
                         <v-row
                           align="center"
                           justify="center"
                         >
-                              <v-form>
-                                  <br>
-                                <v-text-field
-                                :error-messages="nameErrors"
-                                label="Name"
-                                required
-                                @input="$v.name.$touch()"
-                                @blur="$v.name.$touch()"
-                                v-model = "name"
-                                ></v-text-field>
-
-                                <v-text-field
-                                v-model = "lastNamePat"
-                                :error-messages="lastPErrors"
-                                label="Last Name P"
-                                required
-                                @input="$v.lastNamePat.$touch()"
-                                @blur="$v.lastNamePat.$touch()"
-                                ></v-text-field>
-
-                                <v-text-field
-                                v-model = "lastNameMat"
-                                :error-messages="lastMErrors"
-                                label="Last Name Mat"
-                                @input="$v.lastNameMat.$touch()"
-                                @blur="$v.lastNameMat.$touch()"
-                                ></v-text-field>
-                                <v-text-field
-                                v-model = "principalTelephone"
-                                :error-messages="phoneErrors"
-                                label="Phone Number"
-                                required
-                                @input="$v.principalTelephone.$touch()"
-                                @blur="$v.principalTelephone.$touch()"
-                                ></v-text-field>
-
-                                <v-text-field
-                                v-model = "email"
-                                :error-messages="emailErrors"
-                                label="E-mail"
-                                required
-                                @input="$v.email.$touch()"
-                                @blur="$v.email.$touch()"
-                                ></v-text-field>
-                                
-                                <v-checkbox
-                                v-model="checkbox"
-                                :error-messages="checkboxErrors"
-                                label="Do you agree?"
-                                required
-                                @change="$v.checkbox.$touch()"
-                                @blur="$v.checkbox.$touch()"
-                                ></v-checkbox>
-
-                                <v-btn class="mr-4" @click="submit">Submit</v-btn>
-                                <v-btn @click="hide">Close</v-btn>
-                                <br><br>
-                              </v-form>
+                          <app-sign-up></app-sign-up>
                         </v-row>
                         </v-card>
                     </v-dialog>
-  </v-row>
-
+    </v-row>
+-->
+    <app-edit-user v-model="this.$store.state.modeEdit"></app-edit-user>
 
   </v-container>
   
@@ -183,7 +127,8 @@
 import { validationMixin } from 'vuelidate'
 import { required, email, minLength, numeric, alpha } from 'vuelidate/lib/validators'
 import axios from 'axios';
-//import Edit from './editUser.vue'
+//import SignUp from './sign_up.vue'
+import EditUser from './editUser.vue'
   export default {
     mixins: [validationMixin],
 
@@ -326,7 +271,11 @@ import axios from 'axios';
       },
       open(index, id) {
         console.log('open')
-        this.$store.state.selectedID = index;
+        this.$store.state.modeEdit = true;
+        this.$store.state.selectedID = id;
+        this.$store.state.selectedINDEX = index;
+        //CHECK MODE
+        this.$store.state.selectedUser = this.users[index];
         this.activeUser = this.users[index];
         this.id = id;
         this.name = this.users[index].name;
@@ -334,14 +283,6 @@ import axios from 'axios';
         this.lastNameMat = this.users[index].lastNameMat;
         this.email = this.users[index].email;
         this.principalTelephone = this.users[index].principalTelephone;
-        console.log(this.activeUser)
-        console.log(this.name)
-        console.log(this.lastNamePat)
-        console.log(this.lastNameMat)
-        console.log(this.email)
-        console.log(this.principalTelephone)
-        console.log(this.$store.state.selectedID)
-        this.$store.state.showform = true;
       },
       submit () {
         const userData = {
@@ -363,7 +304,7 @@ import axios from 'axios';
                     this.users[this.$store.state.selectedID] = res.data;
                     this.users[this.$store.state.selectedID].principalTelephone = res.data.telephone;
                     console.log(this.users[this.$store.state.selectedID]);
-                    this.$store.state.showform = false;
+                    this.$store.state.modeEdit = false;
                     this.dialog = false
                         })
                 .catch(error => {
@@ -392,11 +333,12 @@ import axios from 'axios';
         this.principalTelephone = null
         this.select = null
         this.checkbox = false
-        this.$store.state.showform = false;
+        this.$store.state.modeEdit = false;
       },
     },
     components: {
-      //appEditUser: Edit
+      //appSignUp: SignUp,
+      appEditUser: EditUser
     },
     
   }
