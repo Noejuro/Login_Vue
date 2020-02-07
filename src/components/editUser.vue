@@ -2,9 +2,6 @@
   <v-dialog light persistent v-model="this.$store.state.modeEdit" max-width="500px">
     <v-card>
       <v-row align="center" justify="center">
-                            
-
-
         <form>
           <v-text-field
             v-model="name"
@@ -93,7 +90,26 @@
 
   export default {
     mixins: [validationMixin],
-
+    props: {
+        id: {
+          type: String
+        },
+        name: {
+          type: String
+        },
+        lastNameMat: {
+          type: String
+        },
+        lastNamePat: {
+          type: String
+        },
+        email: {
+          type: String
+        },
+        principalTelephone: {
+          type: String
+        }
+      },
     validations: {
       name: { required, alpha },
       lastNameMat: { alpha},
@@ -109,20 +125,6 @@
     },
 
     data: () => ({
-      props: {
-        name: '',
-        lastNamePat: '',
-        lastNameMat: '',
-        password: '',
-        email: '',
-        principalTelephone: null,
-      },
-      name: '',
-        lastNamePat: '',
-        lastNameMat: '',
-        password: '',
-        email: '',
-        principalTelephone: null, 
       checkbox: false,
       show: false,
       snackbar: false,
@@ -197,7 +199,7 @@
         if(this.$store.state.modeEdit == true) {
           console.log('Put');
           console.log(userData);
-          axios.put('https://warm-brushlands-30448.herokuapp.com/api/users/'+this.$store.state.selectedID, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
+          axios.put('https://warm-brushlands-30448.herokuapp.com/api/users/'+this.id, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
                     console.log(res);
                     this.users[this.$store.state.selectedINDEX] = res.data;

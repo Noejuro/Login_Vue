@@ -117,7 +117,13 @@
                     </v-dialog>
     </v-row>
 -->
-    <app-edit-user v-model="this.$store.state.modeEdit"></app-edit-user>
+    <app-edit-user 
+    :id="users[index].id"
+    :name="users[index].name"
+    :lastNameMat="users[index].lastNameMat"
+    :lastNamePat="users[index].lastNamePat"
+    :email="users[index].email"
+    :principalTelephone="users[index].principalTelephone"></app-edit-user>
 
   </v-container>
   
@@ -164,6 +170,7 @@ import EditUser from './editUser.vue'
         'email', 
         'principalTelephone',
         'isActive',],
+        index: 0,
         id: '',
         name: '',
         lastNamePat: '',
@@ -274,6 +281,7 @@ import EditUser from './editUser.vue'
         this.$store.state.modeEdit = true;
         this.$store.state.selectedID = id;
         this.$store.state.selectedINDEX = index;
+        this.index = index;
         //CHECK MODE
         this.$store.state.selectedUser = this.users[index];
         this.activeUser = this.users[index];
