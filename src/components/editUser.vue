@@ -1,5 +1,5 @@
 <template>
-  <v-dialog light persistent v-model="this.$store.state.modeEdit" max-width="500px">
+  <v-dialog light persistent v-model="this.$store.state.dialog" max-width="500px">
     <v-card>
       <v-row align="center" justify="center">
         <form>
@@ -46,7 +46,7 @@
             @blur="$v.email.$touch()"
           ></v-text-field>
           <v-text-field
-            v-if="!this.$store.state.modeEdit"
+            v-if="this.$store.state.modeAdd"
             v-model="password"
             :error-messages="passErrors"
             label="Password"
@@ -63,7 +63,7 @@
             @blur="$v.checkbox.$touch()"
           ></v-checkbox>
           <v-btn class="mr-4" @click="submit">Submit</v-btn>
-          <v-btn v-if="!this.$store.state.modeEdit" @click="clear">Clear</v-btn>
+          <v-btn v-if="this.$store.state.modeAdd" @click="clear">Clear</v-btn>
           <v-btn v-if="this.$store.state.modeEdit" @click="clear">Close</v-btn>
           <v-snackbar
             v-model="snackbar"
@@ -210,9 +210,10 @@
                     console.log(this.users[this.$store.state.selectedINDEX]);
                     this.$store.state.users = this.users;
                     this.$store.state.modeEdit = false;*/
-                    this.$store.state.users[this.id] = res.data;
+                    //this.$store.state.users[this.id] = res.data;
+                    this.clear();
+                    this.exitEdit(true, res.data);
                     this.dialog = false
-                    this.clear()
                         })
                 .catch(error => {
                     console.log('Showing err');
@@ -223,7 +224,7 @@
                     this.errorMessage = error.response.data;
                     })
         }
-        else {
+        if(this.$store.state.modeAdd == true) {
         /* eslint-disable no-console */
         this.$set(userData, 'password', this.password);
         console.log(userData);
@@ -246,21 +247,21 @@
         this.$v.$touch()
       },
       clear () {
-        this.name = ''
-        this.lastNamePat = ''
-        this.lastNameMat = ''
-        this.email = ''
-        this.password = ''
-        this.principalTelephone = null
-        this.select = null
         this.checkbox = false
-        this.$store.state.modeEdit = false
         this.$v.$reset()
+        this.$store.state.dialog = false
+        this.$store.state.modeEdit = false
+        this.$store.state.modeAdd = false
       },
+      exitEdit(updated, user) {
+        this.$emit('exit', user, updated);
+      }
     },
     destroyed() {
       console.log('Destroyed Sign Up');
+      this.$store.state.dialog = false
       this.$store.state.modeEdit = false;
+      this.$store.state.modeAdd = false;
     },
     created() {
       console.log('Created Sign Up');

@@ -123,7 +123,8 @@
     :lastNameMat="users[index].lastNameMat"
     :lastNamePat="users[index].lastNamePat"
     :email="users[index].email"
-    :principalTelephone="users[index].principalTelephone"></app-edit-user>
+    :principalTelephone="users[index].principalTelephone"
+    @exit="updateUsers"></app-edit-user>
 
   </v-container>
   
@@ -196,6 +197,8 @@ import EditUser from './editUser.vue'
       },
       open(index, id) {
         console.log('open')
+        console.log(index)
+        this.$store.state.dialog = true;
         this.$store.state.modeEdit = true;
         this.$store.state.selectedID = id;
         this.$store.state.selectedINDEX = index;
@@ -206,6 +209,14 @@ import EditUser from './editUser.vue'
         console.log("ID OPEN");
         console.log(this.id);
       },
+      updateUsers(newUser, updated) {
+        console.log('Updating');
+        console.log(newUser);
+        console.log(updated);
+        console.log(this.users[this.index]);
+        this.users[this.index] = newUser; 
+        console.log(this.users[this.index]);
+      }
     },
     components: {
       //appSignUp: SignUp,

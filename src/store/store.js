@@ -11,6 +11,8 @@ export const store =  new Vuex.Store({
         show_alert: true,
         showform: false,
         modeEdit: false,
+        modeAdd: false,
+        dialog: false,
         selectedID: 0,
         selectedINDEX: 0
     }
