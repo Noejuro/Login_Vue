@@ -118,7 +118,7 @@
     </v-row>
 -->
     <app-edit-user 
-    :id="users[index].id"
+    :id="id"
     :name="users[index].name"
     :lastNameMat="users[index].lastNameMat"
     :lastNamePat="users[index].lastNamePat"
@@ -130,27 +130,10 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, email, minLength, numeric, alpha } from 'vuelidate/lib/validators'
 import axios from 'axios';
 //import SignUp from './sign_up.vue'
 import EditUser from './editUser.vue'
   export default {
-    mixins: [validationMixin],
-
-    validations: {
-      name: { required, alpha },
-      lastNameMat: { alpha},
-      lastNamePat: { required, alpha},
-      password: { required, minLength: minLength(5) },
-      email: { required, email },
-      principalTelephone: { required, numeric },
-      checkbox: {
-        checked (val) {
-          return val
-        },
-      },
-    },
     data: () => ({
       usersPerPage: 9,
       users: [
@@ -161,76 +144,11 @@ import EditUser from './editUser.vue'
         'email', 
         'principalTelephone',
         'isActive',],
-
-        activeUser: [
-        'id', 
-        'name', 
-        'lastNamePat', 
-        'lastNameMat', 
-        'email', 
-        'principalTelephone',
-        'isActive',],
         index: 0,
         id: '',
-        name: '',
-        lastNamePat: '',
-        lastNameMat: '',
-        password: '',
-        email: '',
-        principalTelephone: null,
-        checkbox: false,
         dialog: false,
         statusName: 'Deleted',
     }),
-    computed: {
-      checkboxErrors () {
-        const errors = []
-        if (!this.$v.checkbox.$dirty) return errors
-        !this.$v.checkbox.checked && errors.push('You must agree to continue!')
-        return errors
-      },
-      nameErrors () {
-        const errors = []
-        if (!this.$v.name.$dirty) return errors
-        !this.$v.name.required && errors.push('Name is required.')
-        !this.$v.name.alpha && errors.push('Name must be alphabetic only.')
-        return errors
-      },
-      lastPErrors () {
-        const errors = []
-        if (!this.$v.lastNamePat.$dirty) return errors
-        !this.$v.lastNamePat.required && errors.push('Last Name P is required.')
-        !this.$v.lastNamePat.alpha && errors.push('Last Name must be alphabetic only.')
-        return errors
-      },
-      lastMErrors () {
-        const errors = []
-        if (!this.$v.lastNameMat.$dirty) return errors
-        !this.$v.lastNameMat.alpha && errors.push('Last Name M must be alphabetic only.')
-        return errors
-      },
-      phoneErrors () {
-        const errors = []
-        if (!this.$v.principalTelephone.$dirty) return errors
-        !this.$v.principalTelephone.numeric && errors.push('Phone number must be numeric')
-        !this.$v.principalTelephone.required && errors.push('Phone number is required.')
-        return errors
-      },
-      passErrors () {
-        const errors = []
-        if (!this.$v.password.$dirty) return errors
-        !this.$v.password.minLength && errors.push('Password must be atleast 5 characters long')
-        !this.$v.password.required && errors.push('Password is required.')
-        return errors
-      },
-      emailErrors () {
-        const errors = []
-        if (!this.$v.email.$dirty) return errors
-        !this.$v.email.email && errors.push('Must be valid e-mail')
-        !this.$v.email.required && errors.push('E-mail is required')
-        return errors
-      },
-    },
     created() {
         /* eslint-disable no-console */
         axios.get('https://warm-brushlands-30448.herokuapp.com/api/users',{params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
@@ -284,64 +202,9 @@ import EditUser from './editUser.vue'
         this.index = index;
         //CHECK MODE
         this.$store.state.selectedUser = this.users[index];
-        this.activeUser = this.users[index];
         this.id = id;
-        this.name = this.users[index].name;
-        this.lastNamePat = this.users[index].lastNamePat;
-        this.lastNameMat = this.users[index].lastNameMat;
-        this.email = this.users[index].email;
-        this.principalTelephone = this.users[index].principalTelephone;
-      },
-      submit () {
-        const userData = {
-            name: this.name,
-            lastNamePat: this.lastNamePat,
-            email: this.email,
-            telephone: this.principalTelephone,
-            isActive: true
-          }
-        if(this.lastNameMat != '') {
-          this.$set(userData, 'lastNameMat', this.lastNameMat);
-        }
-        /* eslint-disable no-console */
-        console.log(userData)
-        console.log(this.id)
-        axios.put('https://warm-brushlands-30448.herokuapp.com/api/users/'+this.id, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
-                .then(res => {
-                    console.log(res);
-                    this.users[this.$store.state.selectedID] = res.data;
-                    this.users[this.$store.state.selectedID].principalTelephone = res.data.telephone;
-                    console.log(this.users[this.$store.state.selectedID]);
-                    this.$store.state.modeEdit = false;
-                    this.dialog = false
-                        })
-                .catch(error => {
-                    console.log(error);
-                    })
-        this.$v.$touch()
-      },
-      clear () {
-        this.$v.$reset()
-        this.name = ''
-        this.lastNamePat = ''
-        this.lastNameMat = ''
-        this.email = ''
-        this.password = ''
-        this.principalTelephone = null
-        this.select = null
-        this.checkbox = false
-      },
-      hide () {
-        this.$v.$reset()
-        this.name = ''
-        this.lastNamePat = ''
-        this.lastNameMat = ''
-        this.email = ''
-        this.password = ''
-        this.principalTelephone = null
-        this.select = null
-        this.checkbox = false
-        this.$store.state.modeEdit = false;
+        console.log("ID OPEN");
+        console.log(this.id);
       },
     },
     components: {

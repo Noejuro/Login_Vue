@@ -125,6 +125,7 @@
     },
 
     data: () => ({
+      password: '',
       checkbox: false,
       show: false,
       snackbar: false,
@@ -184,6 +185,7 @@
 
     methods: {
       submit () {
+        
         const userData = {
             name: this.name,
             lastNamePat: this.lastNamePat,
@@ -194,19 +196,21 @@
         if(this.lastNameMat != '') {
           this.$set(userData, 'lastNameMat', this.lastNameMat);
         }
-                /* eslint-disable no-console */
-
+        /* eslint-disable no-console */
+        console.log("ID EDIT");
+        console.log(this.id);
         if(this.$store.state.modeEdit == true) {
           console.log('Put');
           console.log(userData);
           axios.put('https://warm-brushlands-30448.herokuapp.com/api/users/'+this.id, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
                     console.log(res);
-                    this.users[this.$store.state.selectedINDEX] = res.data;
+                    /*this.users[this.$store.state.selectedINDEX] = res.data;
                     this.users[this.$store.state.selectedINDEX].principalTelephone = res.data.telephone;
                     console.log(this.users[this.$store.state.selectedINDEX]);
                     this.$store.state.users = this.users;
-                    this.$store.state.modeEdit = false;
+                    this.$store.state.modeEdit = false;*/
+                    this.$store.state.users[this.id] = res.data;
                     this.dialog = false
                     this.clear()
                         })
