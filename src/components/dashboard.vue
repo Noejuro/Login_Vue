@@ -91,7 +91,11 @@ import SignUp from './sign_up.vue'
       currentComponent: "appTable"
     }),
     created () {
+      /* eslint-disable no-console */
       this.$vuetify.theme.dark = true
+      console.log('Usign LocalStorage');
+      if (localStorage.getItem('token')) this.$store.state.activeUser.token = JSON.parse(localStorage.getItem('token'));
+      if (localStorage.getItem('username')) this.$store.state.activeUser.name = JSON.parse(localStorage.getItem('username'));
     },
     components: {
       appTable: Table,
@@ -100,6 +104,7 @@ import SignUp from './sign_up.vue'
     },
     methods: {
       logout() {
+        localStorage.clear();
         this.$router.push({name: 'login'})
       },
       routeToSignUp() {

@@ -111,6 +111,8 @@ export default {
                     console.log(res)
                     this.$store.state.activeUser.name = res.data.name;
                     this.$store.state.activeUser.token = res.data.token;
+                    localStorage.setItem('token', JSON.stringify(res.data.token));
+                    localStorage.setItem('username', JSON.stringify(res.data.name));
                     this.$router.push({name: 'dashboard'})
                         })
                 .catch(error => {
