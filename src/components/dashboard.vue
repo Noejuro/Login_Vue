@@ -95,6 +95,8 @@ import SignUp from './sign_up.vue'
       this.$vuetify.theme.dark = true
       console.log('Usign LocalStorage');
       if (localStorage.getItem('token')) this.$store.state.activeUser.token = JSON.parse(localStorage.getItem('token'));
+      else 
+        this.$router.push({name: 'error'})
       if (localStorage.getItem('username')) this.$store.state.activeUser.name = JSON.parse(localStorage.getItem('username'));
     },
     components: {
