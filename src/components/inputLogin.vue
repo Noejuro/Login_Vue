@@ -27,7 +27,7 @@
                   
                 </v-tooltip>
               </v-toolbar>
-              <v-card-text ref=form>
+              <v-card-text ref=form @keydown.enter = "Submit">
                 <v-form>
 
                   <v-text-field
