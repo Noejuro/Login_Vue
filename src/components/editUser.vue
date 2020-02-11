@@ -202,9 +202,9 @@
         if(this.$store.state.modeEdit == true) {
           console.log('Put');
           console.log(userData);
-          axios.put('https://warm-brushlands-30448.herokuapp.com/api/users/'+this.id, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
-                .then(res => {
-                    console.log(res);
+          axios.put('https://fast-plateau-98665.herokuapp.com/api/users/'+this.id, userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
+                .then(response => {
+                    console.log(response);
                     /*this.users[this.$store.state.selectedINDEX] = res.data;
                     this.users[this.$store.state.selectedINDEX].principalTelephone = res.data.telephone;
                     console.log(this.users[this.$store.state.selectedINDEX]);
@@ -212,7 +212,8 @@
                     this.$store.state.modeEdit = false;*/
                     //this.$store.state.users[this.id] = res.data;
                     this.clear();
-                    this.exitEdit(true, res.data);
+                    this.$emit('exit', {updated: true, data: response.data});
+                    //this.exitEdit(true, res.data);
                     this.dialog = false
                         })
                 .catch(error => {
@@ -230,7 +231,7 @@
         console.log(userData);
         console.log('Post');
         console.log(userData)
-        axios.post('https://warm-brushlands-30448.herokuapp.com/api/users', userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
+        axios.post('https://fast-plateau-98665.herokuapp.com/api/users', userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
                     console.log(res);
                     this.snackbar = true;

@@ -12,7 +12,9 @@
           dark
           flat
         >
-          <v-toolbar-title>Registered Users</v-toolbar-title>
+          <v-toolbar-title
+          class="flex display-1 font-weight-light font-bold"
+          >Registered Users</v-toolbar-title>
         </v-toolbar>
       </template>
 
@@ -152,7 +154,7 @@ import EditUser from './editUser.vue'
     }),
     created() {
         /* eslint-disable no-console */
-        axios.get('https://warm-brushlands-30448.herokuapp.com/api/users',{params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
+        axios.get('https://fast-plateau-98665.herokuapp.com/api/users',{params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
                 .then(res => {
                     console.log(res);
                     this.$store.state.users = res.data
@@ -167,7 +169,7 @@ import EditUser from './editUser.vue'
         /* eslint-disable no-console */
         console.log('Refresh')
         console.log(id);
-        axios.get('https://warm-brushlands-30448.herokuapp.com/api/users/' + id, {params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
+        axios.get('https://fast-plateau-98665.herokuapp.com/api/users/' + id, {params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
                 .then(res => {
                     console.log(res);
                     this.$store.state.users[index] = res.data
@@ -182,7 +184,7 @@ import EditUser from './editUser.vue'
         this.statusName = statusName;
         console.log(id)
         console.log('Delete');
-        axios.delete('https://warm-brushlands-30448.herokuapp.com/api/users/' + id, {params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
+        axios.delete('https://fast-plateau-98665.herokuapp.com/api/users/' + id, {params:{},headers: {'x-auth-token': this.$store.state.activeUser.token}})
                 .then(res => {
                     console.log(res);
                     this.dialog = true;
@@ -214,7 +216,8 @@ import EditUser from './editUser.vue'
         console.log(newUser);
         console.log(updated);
         console.log(this.users[this.index]);
-        this.users[this.index] = newUser; 
+        Object.assign(this.users[this.index], newUser)
+        //this.users[this.index] = newUser; 
         console.log(this.users[this.index]);
       }
     },

@@ -106,7 +106,7 @@ export default {
             password: this.userPa
           }
           /* eslint-disable no-console */
-            axios.post('https://warm-brushlands-30448.herokuapp.com/api/login', userData)
+            axios.post('https://fast-plateau-98665.herokuapp.com/api/login', userData)
                 .then(res => {
                     console.log(res)
                     this.$store.state.activeUser.name = res.data.name;

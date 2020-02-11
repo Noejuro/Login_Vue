@@ -24,6 +24,14 @@
             <v-list-item-title>Sign up</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link @click="routeToServices">
+          <v-list-item-action>
+            <v-icon >mdi-shape-plus</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Services</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item>
           <v-list-item-content >
             <v-switch
@@ -78,6 +86,7 @@
 
 import Table from './table.vue'
 import SignUp from './sign_up.vue'
+import Services from './services.vue'
 //import Edit from './editUser.vue'
 
   export default {
@@ -101,7 +110,8 @@ import SignUp from './sign_up.vue'
     },
     components: {
       appTable: Table,
-      appSignup: SignUp
+      appSignup: SignUp,
+      appServices: Services
       //appEditUser: Edit
     },
     methods: {
@@ -118,6 +128,10 @@ import SignUp from './sign_up.vue'
         /* eslint-disable no-console */
         console.log('Sign Up')
         this.currentComponent = "appTable"
+      },
+      routeToServices() {
+        /* eslint-disable no-console */
+        this.currentComponent = "appServices"
       }
       
     }
