@@ -74,15 +74,17 @@
                     vertical
                     class="mx-4"
                   ></v-divider>
-
+                  <v-row> </v-row>
                   <v-col cols="3">
-
-                    <v-btn absolute right  small class="ma-1" text icon v-model="services[index].isActive" v-if="!services[index].isActive">
-                      <v-icon color="red">mdi-block-helper</v-icon>
-                    </v-btn>
-
-                    <p>Cost: {{service.cost}}</p>
-
+                    <v-row> </v-row>
+                    
+                    <v-row>
+                      <v-btn absolute right  small class="ma-1" text icon v-model="services[index].isActive" v-if="!services[index].isActive">
+                        <v-icon style="padding: 15px 0 0 0" color="red">mdi-block-helper</v-icon>
+                      </v-btn>
+                      <br>
+                      <p style="padding-top: 30%">Cost: {{service.cost}}</p>
+                    </v-row>
                   </v-col>
                 </v-row>
 
