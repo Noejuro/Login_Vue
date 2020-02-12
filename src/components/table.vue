@@ -120,13 +120,9 @@
     </v-row>
 -->
     <app-edit-user 
-    :id="id"
-    :name="users[index].name"
-    :lastNameMat="users[index].lastNameMat"
-    :lastNamePat="users[index].lastNamePat"
-    :email="users[index].email"
-    :principalTelephone="users[index].principalTelephone"
-    @exit="updateUsers"></app-edit-user>
+    :user="sendUser"
+    :title="title"
+    @exit="updateUsers($event)"></app-edit-user>
 
   </v-container>
   
@@ -147,7 +143,16 @@ import EditUser from './editUser.vue'
         'email', 
         'principalTelephone',
         'isActive',],
+        sendUser: [
+        'id', 
+        'name', 
+        'lastNamePat', 
+        'lastNameMat', 
+        'email', 
+        'principalTelephone',
+        'isActive',],
         index: 0,
+        title: 'Edit',
         id: '',
         dialog: false,
         statusName: 'Deleted',
@@ -199,9 +204,10 @@ import EditUser from './editUser.vue'
       },
       open(index, id) {
         console.log('open')
-        console.log(index)
+        this.sendUser = Object.assign({}, this.users[index]);
         this.$store.state.dialog = true;
         this.$store.state.modeEdit = true;
+        this.title = 'Edit user';
         this.$store.state.selectedID = id;
         this.$store.state.selectedINDEX = index;
         this.index = index;
@@ -211,14 +217,12 @@ import EditUser from './editUser.vue'
         console.log("ID OPEN");
         console.log(this.id);
       },
-      updateUsers(newUser, updated) {
+      updateUsers(response) {
         console.log('Updating');
-        console.log(newUser);
-        console.log(updated);
-        console.log(this.users[this.index]);
-        Object.assign(this.users[this.index], newUser)
-        //this.users[this.index] = newUser; 
-        console.log(this.users[this.index]);
+        console.log(response);
+        console.log(response.data);
+        console.log(response.update);
+        Object.assign(this.users[this.index], response.data)
       }
     },
     components: {
