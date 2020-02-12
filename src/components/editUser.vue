@@ -49,16 +49,6 @@
                 <v-btn class="mr-4" @click="submit">Submit</v-btn>
                 <v-btn v-if="this.$store.state.modeAdd" @click="clear">Clear</v-btn>
                 <v-btn v-if="this.$store.state.modeEdit" @click="clear">Close</v-btn>
-                <v-snackbar
-                  v-model="snackbar"
-                  :timeout= 1500
-                  color = 'green'
-                >User Added</v-snackbar>
-                <v-snackbar
-                  v-model="errMess"
-                  :timeout= 3000
-                  color = 'red'
-                >   {{ errorMessage }}</v-snackbar>
               </form>
             </v-row>
           </v-container>
@@ -87,7 +77,8 @@
       show: false,
       snackbar: false,
       errMess: false,
-      errorMessage: ''
+      errorMessage: '',
+      succesMessage: 'User Added'
     }),
 
     computed: {
@@ -123,6 +114,7 @@
                     this.$store.state.modeEdit = false;*/
                     //this.$store.state.users[this.id] = res.data;
                     this.clear();
+                    this.snackbar = true;
                     this.$emit('exit', {update: true, data: response.data});
                     //this.exitEdit(true, res.data);
                     this.dialog = false
@@ -145,6 +137,7 @@
         axios.post('https://fast-plateau-98665.herokuapp.com/api/users', userData, {params:{}, headers: {'x-auth-token': this.$store.state.activeUser.token} })
                 .then(res => {
                     console.log(res);
+                    this.succesMessage = 'User Added';
                     this.snackbar = true;
                     this.clear()
                         })
